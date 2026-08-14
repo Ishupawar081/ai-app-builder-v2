@@ -23,110 +23,108 @@ st.markdown("""
 
 html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
-/* App background */
-.stApp { background: #0d1117; color: #e6edf3; }
-.main .block-container { padding: 1.5rem 2rem 2rem; max-width: 100%; }
+/* Hide Streamlit Header/Footer */
+header[data-testid="stHeader"] { display: none !important; }
+footer { display: none !important; }
 
-/* Sidebar */
+/* App background (VS Code Main Editor) */
+.stApp { background: #1e1e1e; color: #cccccc; }
+.main .block-container { padding: 0 !important; max-width: 100% !important; margin: 0 !important; }
+
+/* Sidebar (VS Code Explorer) */
 section[data-testid="stSidebar"] {
-    background: #161b22 !important;
-    border-right: 1px solid #30363d;
+    background: #252526 !important;
+    border-right: 1px solid #3c3c3c;
 }
-section[data-testid="stSidebar"] .block-container { padding: 1rem; }
+section[data-testid="stSidebar"] .block-container { padding: 1rem 0; }
 
 /* Headings */
-h1 { font-size: 22px !important; font-weight: 700 !important; color: #e6edf3 !important; }
-h2 { font-size: 17px !important; font-weight: 600 !important; color: #c9d1d9 !important; }
-h3 { font-size: 14px !important; font-weight: 600 !important; color: #8b949e !important; letter-spacing: 0.06em; text-transform: uppercase; }
+h1, h2, h3 { color: #cccccc !important; font-weight: 500 !important; }
+h1 { font-size: 20px !important; }
+h2 { font-size: 16px !important; }
+h3 { font-size: 13px !important; text-transform: uppercase; letter-spacing: 0.05em; padding-left: 1rem; }
 
 /* Inputs */
 .stTextInput > div > div > input,
 .stTextArea > div > div > textarea {
-    background: #0d1117 !important;
-    border: 1px solid #30363d !important;
-    border-radius: 8px !important;
-    color: #e6edf3 !important;
+    background: #3c3c3c !important;
+    border: 1px solid #3c3c3c !important;
+    border-radius: 4px !important;
+    color: #cccccc !important;
     font-family: 'Inter', sans-serif !important;
 }
 .stTextArea > div > div > textarea { font-family: 'JetBrains Mono', monospace !important; font-size: 13px !important; }
 
+/* Code blocks (Editor) */
+.stTextArea[data-testid="stTextArea"] > div > div > textarea {
+    background: #1e1e1e !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
 /* Buttons */
 .stButton > button {
-    background: #21262d !important;
-    color: #c9d1d9 !important;
-    border: 1px solid #30363d !important;
-    border-radius: 8px !important;
-    font-weight: 500 !important;
+    background: #333333 !important;
+    color: #cccccc !important;
+    border: 1px solid #3c3c3c !important;
+    border-radius: 4px !important;
+    font-weight: 400 !important;
     font-size: 13px !important;
-    padding: 6px 14px !important;
-    transition: all 0.15s !important;
+    padding: 4px 12px !important;
+    transition: none !important;
 }
 .stButton > button:hover {
-    background: #30363d !important;
-    border-color: #8b949e !important;
-    color: #e6edf3 !important;
+    background: #444444 !important;
+    border-color: #444444 !important;
+    color: #ffffff !important;
 }
 
-/* Primary button override via key trick */
+/* Primary button */
 [data-testid="stButton"][data-key*="primary"] > button {
-    background: #1f6feb !important;
-    border-color: #1f6feb !important;
+    background: #0e639c !important;
+    border-color: #0e639c !important;
     color: white !important;
 }
+[data-testid="stButton"][data-key*="primary"] > button:hover {
+    background: #1177bb !important;
+}
 
-/* Tabs */
-.stTabs [data-baseweb="tab-list"] { background: transparent !important; border-bottom: 1px solid #21262d !important; gap: 0; }
-.stTabs [data-baseweb="tab"] { background: transparent !important; color: #8b949e !important; border: none !important; padding: 8px 16px !important; font-size: 13px !important; }
-.stTabs [aria-selected="true"] { color: #e6edf3 !important; border-bottom: 2px solid #1f6feb !important; }
-
-/* Code blocks */
-.stCode { background: #161b22 !important; border: 1px solid #30363d !important; border-radius: 8px !important; }
+/* Tabs (VS Code style) */
+.stTabs [data-baseweb="tab-list"] { background: #2d2d2d !important; border-bottom: none !important; gap: 0; padding-top: 0 !important; }
+.stTabs [data-baseweb="tab"] { background: #2d2d2d !important; color: #969696 !important; border: none !important; padding: 10px 20px !important; font-size: 13px !important; }
+.stTabs [aria-selected="true"] { background: #1e1e1e !important; color: #ffffff !important; border-top: 1px solid #007acc !important; }
 
 /* Dividers */
-hr { border-color: #21262d !important; }
+hr { border-color: #3c3c3c !important; margin: 10px 0 !important; }
 
 /* Selectbox */
 .stSelectbox > div > div {
-    background: #0d1117 !important;
-    border: 1px solid #30363d !important;
-    color: #e6edf3 !important;
-    border-radius: 8px !important;
+    background: #3c3c3c !important;
+    border: 1px solid #3c3c3c !important;
+    color: #cccccc !important;
+    border-radius: 4px !important;
 }
-
-/* Status badges */
-.badge {
-    display: inline-block;
-    padding: 2px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-}
-.badge-green  { background: #0d4429; color: #3fb950; border: 1px solid #238636; }
-.badge-yellow { background: #272115; color: #d29922; border: 1px solid #9e6a03; }
-.badge-blue   { background: #051d4d; color: #58a6ff; border: 1px solid #1f6feb; }
-.badge-gray   { background: #21262d; color: #8b949e; border: 1px solid #30363d; }
 
 /* File tree items */
 .file-item {
-    padding: 5px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-family: 'JetBrains Mono', monospace;
+    padding: 4px 1rem;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
     cursor: pointer;
-    color: #8b949e;
-    transition: all 0.1s;
+    color: #cccccc;
+    transition: none;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    border: 1px solid transparent;
 }
-.file-item:hover { background: #21262d; color: #e6edf3; }
-.file-item-active { background: #1f3a6e !important; color: #58a6ff !important; }
+.file-item:hover { background: #2a2d2e; }
+.file-item-active { background: #37373d !important; color: #ffffff !important; }
 
 /* Diff view */
-.diff-add { background: #0d2a1c; color: #3fb950; }
-.diff-del { background: #2a0d0d; color: #f85149; }
-.diff-ctx { color: #8b949e; }
+.diff-add { background: #234b23; color: #cccccc; }
+.diff-del { background: #5a1d1d; color: #cccccc; }
+.diff-ctx { color: #858585; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -307,395 +305,178 @@ with st.sidebar:
                 )
 
 
-# =========================================================
-# ▌MAIN AREA — Tabs
-# =========================================================
-tab_build, tab_editor, tab_terminal, tab_preview = st.tabs([
-    "🏗️  Build",
-    "📝  Editor",
-    "🖥️  Terminal",
-    "🖼️  Preview",
-])
-
 
 # =========================================================
-# TAB 1: BUILD
+
 # =========================================================
-with tab_build:
-    col_left, col_right = st.columns([1.2, 1], gap="large")
+# ▌MAIN AREA — VS Code Layout
+# =========================================================
 
-    with col_left:
-        st.markdown("## Build your app")
-        st.markdown("Describe what you want. The AI plans and codes it end-to-end.")
+col_main, col_chat = st.columns([3.5, 1], gap="small")
 
+# ---------------------------------------------------------
+# LEFT COLUMN: Main Workspace (Editor + Bottom Terminal)
+# ---------------------------------------------------------
+with col_main:
+    # --- 1. EDITOR AREA (Top) ---
+    editor_tabs = st.tabs(["app.py", "agent.py", "Preview", "Plan"])
+
+    with editor_tabs[0]:
+        if not app_built:
+            st.info("Build an app first to use the editor.")
+        else:
+            selected = st.session_state.selected_file
+            if not selected:
+                st.markdown(
+                    '''<div style="padding:40px;text-align:center;color:#858585;">
+                        <div style="font-size:32px;margin-bottom:12px;">📂</div>
+                        <div>Select a file from the Explorer to edit</div>
+                    </div>''',
+                    unsafe_allow_html=True,
+                )
+            else:
+                full_path = os.path.join(BASE, selected)
+                if not file_ext_ok(selected):
+                    st.warning("Binary or unsupported file type — cannot edit here.")
+                else:
+                    if not st.session_state.editor_content and selected:
+                        content = read_file(full_path) or ""
+                        st.session_state.editor_content = content
+                        st.session_state.diff_old = content
+
+                    # Header actions
+                    h1, h2, h3 = st.columns([6, 1, 1])
+                    with h1:
+                        st.caption(f"src > {os.path.basename(selected)}")
+                    with h2:
+                        save_btn = st.button("💾", help="Save")
+                    with h3:
+                        diff_btn = st.button("🔀", help="Diff")
+
+                    # ── Code editor ──
+                    new_content = st.text_area(
+                        "editor",
+                        value=st.session_state.editor_content,
+                        height=400,
+                        label_visibility="collapsed",
+                        key="main_editor",
+                    )
+                    st.session_state.editor_content = new_content
+
+                    if save_btn:
+                        save_file(selected, new_content, PROJECT_ID)
+                        st.session_state.diff_old = new_content
+                        st.success("Saved")
+
+                    if diff_btn:
+                        st.session_state.show_diff = not st.session_state.show_diff
+
+                    if st.session_state.show_diff:
+                        old = st.session_state.diff_old or ""
+                        st.markdown(render_diff(old, new_content), unsafe_allow_html=True)
+
+    with editor_tabs[1]:
+        st.info("agent.py placeholder")
+        
+    with editor_tabs[2]:
+        preview_url = st.text_input("URL", value="http://localhost:5173", label_visibility="collapsed")
+        if st.button("▶️ Launch"):
+            run_dev_server(PROJECT_ID)
+        components.iframe(preview_url, height=450, scrolling=True)
+
+    with editor_tabs[3]:
+        if st.session_state.plan:
+            st.json(st.session_state.plan)
+        else:
+            st.info("No plan generated yet.")
+
+    st.markdown("---")
+
+    # --- 2. TERMINAL AREA (Bottom) ---
+    term_tabs = st.tabs(["Problems", "Output", "Terminal", "Ports"])
+    
+    with term_tabs[0]:
+        st.write("No problems have been detected in the workspace.")
+        
+    with term_tabs[1]:
+        st.write("Output channel")
+        
+    with term_tabs[2]:
+        cmd_input = st.text_input("bash >", placeholder="npm run build", label_visibility="collapsed")
+        if cmd_input.strip():
+            rc, out = run_cmd(cmd_input, BASE, timeout=60)
+            st.session_state.terminal_output = f"$ {cmd_input}\n\n{out}"
+
+        if st.session_state.terminal_output:
+            st.text_area("Terminal Output", st.session_state.terminal_output, height=150, label_visibility="collapsed")
+            
+    with term_tabs[3]:
+        st.write("No forwarded ports.")
+
+
+# ---------------------------------------------------------
+# RIGHT COLUMN: AI Chatbot / Command Center
+# ---------------------------------------------------------
+with col_chat:
+    st.markdown("### Antigravity")
+    
+    if not app_built:
+        st.info("Open Agent Manager")
         user_input = st.text_area(
-            "App idea",
-            height=110,
-            placeholder="e.g. A project management app with Kanban board, task priorities, due dates, and a dashboard showing progress stats",
-            label_visibility="collapsed",
+            "Prompt",
+            height=100,
+            placeholder="Ask anything, @ to mention, / for commands..."
         )
-
-        bcol1, bcol2 = st.columns(2)
-        with bcol1:
-            gen_btn = st.button("🧠 Generate Plan", use_container_width=True)
-        with bcol2:
-            build_btn = st.button(
-                "🚀 Build App",
-                use_container_width=True,
-                disabled=not bool(st.session_state.plan),
-            )
-
-        # Example prompts
-        with st.expander("💡 Example prompts"):
-            examples = [
-                "A Kanban board with drag-drop columns, task cards with priority labels and due dates",
-                "A personal finance tracker with expense categories, monthly charts, and budget goals",
-                "A markdown note-taking app with folder organization, search, and live preview",
-                "A habit tracker with streak calendar, completion rings, and weekly summary",
-                "A recipe manager with ingredient scaling, timer, and meal planning calendar",
-                "A CRM lite — contacts list, deal pipeline, notes per contact",
-            ]
-            for ex in examples:
-                if st.button(ex, key=f"ex_{ex[:30]}", use_container_width=True):
-                    st.session_state["_inject_prompt"] = ex
-                    st.rerun()
-
-        # Inject example into text area via session hack
-        if "_inject_prompt" in st.session_state:
-            user_input = st.session_state.pop("_inject_prompt")
-
-        # ── Generate Plan ─────────────────────────────────
-        if gen_btn and user_input.strip():
-            with st.spinner("Planning…"):
+        if st.button("Generate Plan", type="primary"):
+            if user_input.strip():
                 plan = generate_plan(user_input)
-            st.session_state.plan = plan
-            st.rerun()
-
-        # ── Build ─────────────────────────────────────────
-        if build_btn and st.session_state.plan:
-            log_placeholder = st.empty()
-            with st.spinner("Building — this takes ~60 seconds…"):
+                st.session_state.plan = plan
+                st.rerun()
+                
+        if st.button("Build App"):
+            if st.session_state.plan:
                 result = build_app(
                     user_input or st.session_state.plan.get("description", ""),
                     PROJECT_ID,
                     plan=st.session_state.plan,
                 )
-            st.session_state.build_log = result
-            st.success(result)
-            st.rerun()
-
-        # ── Modify App ────────────────────────────────────
-        if app_built:
-            st.divider()
-            st.markdown("## ✏️ Modify whole app")
-            mod_input = st.text_input(
-                "Describe changes",
-                placeholder="Add a dark/light mode toggle, improve the sidebar nav, add search…",
-                label_visibility="collapsed",
-            )
-            if st.button("Apply Changes", disabled=not bool(mod_input)):
-                with st.spinner("Updating app…"):
-                    result = update_app(mod_input, PROJECT_ID)
-                st.success(result)
+                st.session_state.build_log = result
                 st.rerun()
-
-    # ── Right: Plan ────────────────────────────────────────
-    with col_right:
-        if st.session_state.plan:
-            plan = st.session_state.plan
-            st.markdown("## 📋 Plan")
-
-            # Color palette preview
-            palette = plan.get("color_palette", {})
-            if palette:
-                swatches = "".join(
-                    f'<div title="{k}: {v}" style="width:28px;height:28px;border-radius:6px;background:{v};border:1px solid rgba(255,255,255,0.15);"></div>'
-                    for k, v in palette.items()
-                )
-                st.markdown(
-                    f'<div style="display:flex;gap:6px;margin-bottom:16px;">{swatches}</div>',
-                    unsafe_allow_html=True,
-                )
-
-            # Key metadata
-            meta_cols = st.columns(2)
-            with meta_cols[0]:
-                st.markdown(f"**{plan.get('app_name', '—')}**")
-                st.caption(plan.get("layout", "—") + " layout")
-            with meta_cols[1]:
-                fonts = plan.get("typography", {})
-                st.caption(f"🔤 {fonts.get('heading_font', '—')} / {fonts.get('body_font', '—')}")
-
-            # Features
-            features = plan.get("features", [])
-            if features:
-                st.markdown("**Features**")
-                for f in features[:8]:
-                    st.markdown(f"- {f}")
-
-            # Components
-            components_list = plan.get("components", [])
-            if components_list:
-                st.markdown("**Components**")
-                for c in components_list[:6]:
-                    name = c.get("name", c) if isinstance(c, dict) else c
-                    purpose = c.get("purpose", "") if isinstance(c, dict) else ""
-                    st.markdown(f"- `{name}` — {purpose}" if purpose else f"- `{name}`")
-
-            with st.expander("Full JSON plan"):
-                st.json(plan)
-        else:
-            st.markdown(
-                """
-                <div style="background:#161b22;border:1px solid #30363d;border-radius:12px;padding:40px;text-align:center;color:#8b949e;">
-                    <div style="font-size:40px;margin-bottom:12px;">⚡</div>
-                    <div style="font-size:15px;font-weight:600;color:#c9d1d9;margin-bottom:8px;">No plan yet</div>
-                    <div style="font-size:13px;">Enter your app idea and click Generate Plan</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
-
-# =========================================================
-# TAB 2: EDITOR
-# =========================================================
-with tab_editor:
-    if not app_built:
-        st.info("Build an app first to use the editor.")
     else:
-        selected = st.session_state.selected_file
-        if not selected:
-            st.markdown(
-                """<div style="background:#161b22;border:1px solid #30363d;border-radius:12px;padding:40px;text-align:center;color:#8b949e;">
-                    <div style="font-size:32px;margin-bottom:12px;">📂</div>
-                    <div>Select a file from the sidebar to edit</div>
-                </div>""",
-                unsafe_allow_html=True,
-            )
-        else:
-            full_path = os.path.join(BASE, selected)
-            icon = get_file_icon(selected)
-
-            # Header bar
-            h1, h2, h3, h4 = st.columns([3, 1, 1, 1])
-            with h1:
-                st.markdown(f"**{icon}{selected}**")
-            with h2:
-                save_btn = st.button("💾 Save", use_container_width=True)
-            with h3:
-                diff_btn = st.button("🔀 Diff", use_container_width=True)
-            with h4:
-                explain_btn = st.button("💡 Explain", use_container_width=True)
-
-            if not file_ext_ok(selected):
-                st.warning("Binary or unsupported file type — cannot edit here.")
-            else:
-                # Load content if not cached for this file
-                if not st.session_state.editor_content and selected:
-                    content = read_file(full_path) or ""
-                    st.session_state.editor_content = content
-                    st.session_state.diff_old = content
-
-                # ── AI Edit bar ─────────────────────────────────
-                ai_col, ai_btn_col = st.columns([4, 1])
-                with ai_col:
-                    ai_instruction = st.text_input(
-                        "AI edit instruction",
-                        placeholder="e.g. Add input validation, refactor the handleSubmit function, change color #3b82f6 to #10b981",
-                        label_visibility="collapsed",
-                    )
-                with ai_btn_col:
-                    ai_edit_btn = st.button("✨ AI Edit", use_container_width=True)
-
-                if ai_edit_btn and ai_instruction.strip():
-                    with st.spinner("Applying AI edit…"):
+        action = st.radio("Mode:", ["Edit File", "Update App", "New App"])
+        
+        if action == "Edit File":
+            if st.session_state.selected_file:
+                st.markdown(f"`{os.path.basename(st.session_state.selected_file)}`")
+                ai_inst = st.text_area("Instruction", height=100, placeholder="Ask anything...")
+                if st.button("Submit", type="primary"):
+                    if ai_inst.strip():
                         current = st.session_state.editor_content
                         updated = ai_edit_file(
                             current,
-                            os.path.basename(selected),
-                            ai_instruction,
+                            os.path.basename(st.session_state.selected_file),
+                            ai_inst,
                         )
-                    if updated:
-                        st.session_state.diff_new = updated
-                        st.session_state.diff_old = current
-                        st.session_state.editor_content = updated
-                        st.session_state.show_diff = True
-                        st.success("AI edit applied — review diff below, then Save")
-                    else:
-                        st.error("AI edit failed")
-
-                # ── Code editor ─────────────────────────────────
-                new_content = st.text_area(
-                    "editor",
-                    value=st.session_state.editor_content,
-                    height=500,
-                    label_visibility="collapsed",
-                    key="main_editor",
-                )
-                st.session_state.editor_content = new_content
-
-                # Line jump
-                ljcol1, ljcol2 = st.columns([3, 1])
-                with ljcol1:
-                    line_num = st.number_input("Jump to line", min_value=1, step=1, label_visibility="collapsed")
-                with ljcol2:
-                    if st.button("Go", use_container_width=True):
-                        lines = new_content.splitlines()
-                        if line_num <= len(lines):
-                            ctx_start = max(0, line_num - 4)
-                            ctx_end   = min(len(lines), line_num + 3)
-                            snippet   = "\n".join(
-                                f"{'→ ' if i + 1 == line_num else '  '}{i+1:4d}  {lines[i]}"
-                                for i in range(ctx_start, ctx_end)
-                            )
-                            st.code(snippet, language="jsx")
-
-                # ── Save ────────────────────────────────────────
-                if save_btn:
-                    with st.spinner("Saving…"):
-                        result = save_file(selected, new_content, PROJECT_ID)
-                    st.session_state.diff_old = new_content
-                    st.success(result)
-
-                # ── Diff ────────────────────────────────────────
-                if diff_btn:
-                    st.session_state.show_diff = not st.session_state.show_diff
-
-                if st.session_state.show_diff:
-                    old = st.session_state.diff_old or ""
-                    new = new_content
-                    st.markdown("**Changes** (red = removed, green = added)")
-                    st.markdown(render_diff(old, new), unsafe_allow_html=True)
-
-                # ── Explain ─────────────────────────────────────
-                if explain_btn:
-                    with st.spinner("Explaining…"):
-                        explanation = ai_explain_code(new_content, os.path.basename(selected))
-                    if explanation:
-                        with st.expander("💡 AI Explanation", expanded=True):
-                            st.write(explanation)
-
-                # ── Line-level AI edit ──────────────────────────
-                with st.expander("🎯 Line-range AI Edit"):
-                    lc1, lc2, lc3 = st.columns([1, 1, 3])
-                    with lc1:
-                        line_start = st.number_input("From line", min_value=1, step=1, key="ls")
-                    with lc2:
-                        line_end = st.number_input("To line", min_value=1, step=1, key="le")
-                    with lc3:
-                        line_inst = st.text_input("Instruction for this range", key="li")
-
-                    if st.button("Apply to range", key="lr_apply"):
-                        lines = new_content.splitlines()
-                        s, e = int(line_start) - 1, int(line_end)
-                        snippet = "\n".join(lines[s:e])
-                        with st.spinner("Editing lines…"):
-                            fixed_snippet = ai_edit_file(
-                                snippet,
-                                os.path.basename(selected),
-                                line_inst,
-                            )
-                        if fixed_snippet:
-                            new_lines = lines[:s] + fixed_snippet.splitlines() + lines[e:]
-                            updated_full = "\n".join(new_lines)
-                            st.session_state.editor_content = updated_full
-                            st.success(f"Lines {line_start}–{line_end} updated. Click 💾 Save to persist.")
+                        if updated:
+                            st.session_state.editor_content = updated
+                            st.session_state.show_diff = True
                             st.rerun()
-                        else:
-                            st.error("AI line edit failed")
-
-
-# =========================================================
-# TAB 3: TERMINAL
-# =========================================================
-with tab_terminal:
-    if not app_built:
-        st.info("Build an app first to use the terminal.")
-    else:
-        st.markdown("Run commands in the project directory.")
-
-        # Quick commands
-        qcmds = {
-            "npm run build":    "🔨 Build",
-            "npm run dev":      "▶️ Dev",
-            "npm install":      "📦 Install",
-            "npm list --depth=0": "📋 Packages",
-            "ls src/":          "📂 List src",
-        }
-        cols = st.columns(len(qcmds))
-        for col, (cmd, label) in zip(cols, qcmds.items()):
-            with col:
-                if st.button(label, use_container_width=True, key=f"qcmd_{cmd}"):
-                    rc, out = run_cmd(cmd, BASE, timeout=60)
-                    st.session_state.terminal_output = f"$ {cmd}\n\n{out}"
-
-        st.divider()
-
-        cmd_input = st.text_input(
-            "Command",
-            placeholder="e.g. npm run build",
-            label_visibility="collapsed",
-        )
-        run_cols = st.columns([4, 1])
-        with run_cols[1]:
-            run_btn = st.button("▶️ Run", use_container_width=True)
-
-        if run_btn and cmd_input.strip():
-            with st.spinner(f"Running: {cmd_input}"):
-                rc, out = run_cmd(cmd_input, BASE, timeout=120)
-            st.session_state.terminal_output = f"$ {cmd_input}\n\n{out}"
-            if rc == 0:
-                st.success("✅ Command succeeded")
             else:
-                st.error(f"❌ Exit code {rc}")
+                st.warning("Select file")
+                
+        elif action == "Update App":
+            mod_input = st.text_area("Instruction", height=100)
+            if st.button("Submit", type="primary"):
+                if mod_input.strip():
+                    update_app(mod_input, PROJECT_ID)
+                    st.rerun()
+                    
+        elif action == "New App":
+            new_input = st.text_area("Prompt", height=100)
+            if st.button("Build", type="primary"):
+                if new_input.strip():
+                    plan = generate_plan(new_input)
+                    st.session_state.plan = plan
+                    build_app(new_input, PROJECT_ID, plan)
+                    st.rerun()
 
-        if st.session_state.terminal_output:
-            st.text_area(
-                "Output",
-                st.session_state.terminal_output,
-                height=320,
-                label_visibility="collapsed",
-            )
-
-        # ── AI fix from terminal output ──────────────────
-        if st.session_state.terminal_output and "error" in st.session_state.terminal_output.lower():
-            if st.button("🛠️ AI Fix errors above"):
-                with st.spinner("Analysing and fixing…"):
-                    current = read_file(APP_FILE) or ""
-                    from planner import fix_app_code
-                    fixed = fix_app_code(st.session_state.terminal_output[:2000], current)
-                if fixed:
-                    write_file(APP_FILE, fixed)
-                    st.success("✅ App.jsx auto-fixed — rebuild to verify")
-                    rc, out = run_cmd("npm run build", BASE)
-                    st.session_state.terminal_output = f"$ npm run build\n\n{out}"
-                    if rc == 0:
-                        st.success("Build now passes ✅")
-                    else:
-                        st.warning("Still errors — check output above")
-                else:
-                    st.error("AI fix failed")
-
-
-# =========================================================
-# TAB 4: PREVIEW
-# =========================================================
-with tab_preview:
-    st.markdown("## 🖥️ Live Preview")
-    st.caption("The preview requires the Vite dev server to be running (click ▶️ Dev Server in the sidebar).")
-
-    preview_cols = st.columns([3, 1])
-    with preview_cols[0]:
-        preview_url = st.text_input("Preview URL", value="http://localhost:5173", label_visibility="collapsed")
-    with preview_cols[1]:
-        launch_btn = st.button("▶️ Start Server", use_container_width=True)
-
-    if launch_btn:
-        if app_built:
-            msg = run_dev_server(PROJECT_ID)
-            st.success(msg)
-        else:
-            st.warning("Build an app first")
-
-    components.iframe(preview_url, height=640, scrolling=True)

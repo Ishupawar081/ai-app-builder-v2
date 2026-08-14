@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-vs-bg: #1e1e1e;
+  --color-vs-sidebar: #252526;
+  --color-vs-activity: #333333;
+  --color-vs-panel: #1e1e1e;
+  --color-vs-border: #3c3c3c;
+  --color-vs-text: #cccccc;
+  --color-vs-blue: #007acc;
+  --color-vs-hover: #2a2d2e;
+  --color-vs-active: #37373d;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--color-vs-bg);
+  color: var(--color-vs-text);
+}

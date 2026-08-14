@@ -17,6 +17,7 @@ def get_paths(project_id: str) -> dict:
         "APP":  os.path.join(base, "src", "App.jsx"),
         "HTML": os.path.join(base, "index.html"),
         "VITE": os.path.join(base, "vite.config.js"),
+        "SERVER": os.path.join(base, "server.js"),
     }
 
 
@@ -63,8 +64,16 @@ def ensure_base_setup(paths: dict):
 
     # Inject Google Fonts into index.html if needed
     _patch_index_html(paths)
+    
+    # Overwrite default index.css to remove max-width constraints
+    _patch_index_css(paths)
 
 
+def _patch_index_css(paths: dict):
+    css_path = os.path.join(paths["SRC"], "index.css")
+    if os.path.exists(css_path):
+        with open(css_path, "w", encoding="utf-8") as f:
+            f.write("body { margin: 0; padding: 0; box-sizing: border-box; }\n* { box-sizing: inherit; }")
 def _patch_index_html(paths: dict):
     """Add Google Fonts preconnect + stylesheet to index.html."""
     html_path = paths["HTML"]
@@ -99,6 +108,8 @@ def detect_dependencies(code: str) -> list[str]:
         "recharts":         "recharts",
         "framer-motion":    "framer-motion",
         "date-fns":         "date-fns",
+        "express":          "express cors",
+        "cors":             "cors",
     }
     found = []
     for keyword, pkg in mapping.items():
@@ -132,7 +143,7 @@ def clean_code(code: str) -> str | None:
 def is_valid(code: str) -> bool:
     if not code:
         return False
-    return all(x in code for x in ["function App", "return (", "export default"])
+    return "export default" in code and "return" in code
 
 
 def write_file(path: str, content: str):
@@ -219,16 +230,24 @@ export default App
 # =========================================================
 
 def build_app(user_prompt: str, project_id: str, plan: dict = None) -> str:
-    from planner import generate_initial_app, fix_app_code
+    from planner import generate_initial_app, generate_backend_code, fix_app_code
 
-    print(f"\n🚀 Building app_{project_id} …")
+    print(f"\\n🚀 Building app_{project_id} …")
     paths = get_paths(project_id)
     base  = paths["BASE"]
 
     # 1. Scaffold
     ensure_base_setup(paths)
 
-    # 2. Generate code
+    # 2. Generate backend code
+    print("⚡ Generating server.js …")
+    server_code = generate_backend_code(user_prompt, plan)
+    if server_code:
+        write_file(paths["SERVER"], server_code)
+    else:
+        print("⚠️  Failed to generate backend")
+
+    # 3. Generate frontend code
     print("⚡ Generating App.jsx …")
     code = generate_initial_app(user_prompt, plan)
     code = clean_code(code)
@@ -238,16 +257,20 @@ def build_app(user_prompt: str, project_id: str, plan: dict = None) -> str:
         app_name = plan.get("app_name", user_prompt) if plan else user_prompt
         code = fallback_app(app_name)
 
-    # 3. Install deps
+    # 4. Install deps
     deps = detect_dependencies(code)
+    if server_code:
+        deps.extend(["express", "cors"])
+        deps = list(set(deps))
+
     if deps:
         print(f"📦 Detected deps: {deps}")
         install_dependencies(deps, base)
 
-    # 4. Write App.jsx
+    # 5. Write App.jsx
     write_file(paths["APP"], code)
 
-    # 5. Build check with auto-fix loop (max 2 attempts)
+    # 6. Build check with auto-fix loop (max 2 attempts)
     for attempt in range(2):
         rc, logs = run_cmd("npm run build", base)
         if rc == 0:
@@ -427,10 +450,16 @@ def run_dev_server(project_id: str) -> str:
         DEV_PROCESS.terminate()
         DEV_PROCESS = None
 
-    print("▶️  Starting Vite dev server …")
+    print("▶️  Starting Vite & Express dev servers …")
+    
+    start_cmd = "npm run dev -- --host --port 5174"
+    if os.path.exists(paths.get("SERVER", os.path.join(base, "server.js"))):
+        # Run node and vite concurrently
+        start_cmd = 'npx -y concurrently "node server.js" "npm run dev -- --host --port 5174"'
+        
     DEV_PROCESS = subprocess.Popen(
-        "npm run dev -- --host",
+        start_cmd,
         cwd=base, shell=True
     )
 
-    return "🚀 Running at http://localhost:5173"
+    return "🚀 Running at http://localhost:5174"
