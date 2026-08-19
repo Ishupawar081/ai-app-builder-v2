@@ -6,7 +6,7 @@ DEV_PROCESS = None  # global guard — only one dev server at a time
 
 
 # =========================================================
-# 🔥 PATH HELPERS
+#  PATH HELPERS
 # =========================================================
 
 def get_paths(project_id: str) -> dict:
@@ -22,7 +22,7 @@ def get_paths(project_id: str) -> dict:
 
 
 # =========================================================
-# 🔥 SHELL HELPER
+#  SHELL HELPER
 # =========================================================
 
 def run_cmd(cmd: str, cwd: str, timeout: int = 120) -> tuple[int, str]:
@@ -40,14 +40,14 @@ def run_cmd(cmd: str, cwd: str, timeout: int = 120) -> tuple[int, str]:
 
 
 # =========================================================
-# 🔥 PROJECT SCAFFOLD
+#  PROJECT SCAFFOLD
 # =========================================================
 
 def ensure_base_setup(paths: dict):
     base = paths["BASE"]
 
     if not os.path.exists(base):
-        print("⚙️  Scaffolding new Vite+React project …")
+        print("  Scaffolding new Vite+React project …")
         os.makedirs(os.path.dirname(base), exist_ok=True)
         code, out = run_cmd(
             f'npx create-vite@latest "{os.path.basename(base)}" --template react',
@@ -55,11 +55,11 @@ def ensure_base_setup(paths: dict):
             timeout=180,
         )
         if code != 0:
-            print("⚠️  create-vite failed:", out[:400])
+            print("  create-vite failed:", out[:400])
 
     # Always ensure node_modules present
     if not os.path.exists(os.path.join(base, "node_modules")):
-        print("📦 Installing npm dependencies …")
+        print(" Installing npm dependencies …")
         run_cmd("npm install", base, timeout=180)
 
     # Inject Google Fonts into index.html if needed
@@ -92,11 +92,11 @@ def _patch_index_html(paths: dict):
         content = content.replace("</head>", font_tag + "\n  </head>")
         with open(html_path, "w", encoding="utf-8") as f:
             f.write(content)
-        print("✅ Google Fonts injected into index.html")
+        print(" Google Fonts injected into index.html")
 
 
 # =========================================================
-# 🔥 DEPENDENCY HANDLING
+#  DEPENDENCY HANDLING
 # =========================================================
 
 def detect_dependencies(code: str) -> list[str]:
@@ -120,12 +120,12 @@ def detect_dependencies(code: str) -> list[str]:
 
 def install_dependencies(deps: list[str], base: str):
     for dep in deps:
-        print(f"📦 npm install {dep}")
+        print(f" npm install {dep}")
         run_cmd(f"npm install {dep}", base, timeout=120)
 
 
 # =========================================================
-# 🔥 CODE HELPERS
+#  CODE HELPERS
 # =========================================================
 
 def clean_code(code: str) -> str | None:
@@ -151,7 +151,7 @@ def write_file(path: str, content: str):
     with open(path, "w", encoding="utf-8") as f:
         f.write(content)
     size = os.path.getsize(path)
-    print(f"✅ Written: {path} ({size} bytes)")
+    print(f" Written: {path} ({size} bytes)")
 
 
 def read_file(path: str) -> str | None:
@@ -161,12 +161,12 @@ def read_file(path: str) -> str | None:
         with open(path, "r", encoding="utf-8") as f:
             return f.read()
     except Exception as e:
-        print(f"❌ read_file error: {e}")
+        print(f" read_file error: {e}")
         return None
 
 
 # =========================================================
-# 🔥 FALLBACK APP
+#  FALLBACK APP
 # =========================================================
 
 def fallback_app(title: str = "My App") -> str:
@@ -226,13 +226,13 @@ export default App
 
 
 # =========================================================
-# 🔥 BUILD APP  (main pipeline)
+#  BUILD APP  (main pipeline)
 # =========================================================
 
 def build_app(user_prompt: str, project_id: str, plan: dict = None) -> str:
     from planner import generate_initial_app, generate_backend_code, fix_app_code
 
-    print(f"\\n🚀 Building app_{project_id} …")
+    print(f"\\n Building app_{project_id} …")
     paths = get_paths(project_id)
     base  = paths["BASE"]
 
@@ -240,20 +240,20 @@ def build_app(user_prompt: str, project_id: str, plan: dict = None) -> str:
     ensure_base_setup(paths)
 
     # 2. Generate backend code
-    print("⚡ Generating server.js …")
+    print(" Generating server.js …")
     server_code = generate_backend_code(user_prompt, plan)
     if server_code:
         write_file(paths["SERVER"], server_code)
     else:
-        print("⚠️  Failed to generate backend")
+        print("  Failed to generate backend")
 
     # 3. Generate frontend code
-    print("⚡ Generating App.jsx …")
+    print(" Generating App.jsx …")
     code = generate_initial_app(user_prompt, plan)
     code = clean_code(code)
 
     if not is_valid(code):
-        print("⚠️  LLM code invalid → fallback")
+        print("  LLM code invalid → fallback")
         app_name = plan.get("app_name", user_prompt) if plan else user_prompt
         code = fallback_app(app_name)
 
@@ -264,7 +264,7 @@ def build_app(user_prompt: str, project_id: str, plan: dict = None) -> str:
         deps = list(set(deps))
 
     if deps:
-        print(f"📦 Detected deps: {deps}")
+        print(f" Detected deps: {deps}")
         install_dependencies(deps, base)
 
     # 5. Write App.jsx
@@ -274,10 +274,10 @@ def build_app(user_prompt: str, project_id: str, plan: dict = None) -> str:
     for attempt in range(2):
         rc, logs = run_cmd("npm run build", base)
         if rc == 0:
-            print(f"✅ Build succeeded (attempt {attempt + 1})")
+            print(f" Build succeeded (attempt {attempt + 1})")
             break
 
-        print(f"⚠️  Build error (attempt {attempt + 1}) → auto-fixing …")
+        print(f"  Build error (attempt {attempt + 1}) → auto-fixing …")
         print("Errors:", logs[:500])
 
         current = read_file(paths["APP"]) or code
@@ -287,18 +287,18 @@ def build_app(user_prompt: str, project_id: str, plan: dict = None) -> str:
         if is_valid(fixed):
             write_file(paths["APP"], fixed)
         else:
-            print("❌ Auto-fix failed → using fallback")
+            print(" Auto-fix failed → using fallback")
             app_name = plan.get("app_name", user_prompt) if plan else user_prompt
             write_file(paths["APP"], fallback_app(app_name))
             break
     else:
-        print("⚠️  All build attempts exhausted")
+        print("  All build attempts exhausted")
 
-    return "🎉 App built successfully"
+    return " App built successfully"
 
 
 # =========================================================
-# ✏️ UPDATE APP  (whole-app modification)
+#  UPDATE APP  (whole-app modification)
 # =========================================================
 
 def update_app(user_request: str, project_id: str) -> str:
@@ -308,11 +308,11 @@ def update_app(user_request: str, project_id: str) -> str:
     base  = paths["BASE"]
 
     if not os.path.exists(paths["APP"]):
-        return "❌ No app found — build it first."
+        return " No app found — build it first."
 
     current = read_file(paths["APP"])
     if not current:
-        return "❌ Could not read App.jsx"
+        return " Could not read App.jsx"
 
     prompt = f"""
 Modify this React App.jsx based on the request.
@@ -335,25 +335,25 @@ CURRENT CODE:
     updated = clean_code(updated)
 
     if not updated or not is_valid(updated):
-        return "❌ Update failed — LLM returned invalid code"
+        return " Update failed — LLM returned invalid code"
 
     write_file(paths["APP"], updated)
 
     # Rebuild after update
     rc, logs = run_cmd("npm run build", base)
     if rc != 0:
-        print("⚠️  Post-update build error → auto-fixing …")
+        print("  Post-update build error → auto-fixing …")
         fixed = fix_app_code(logs[:2000], updated)
         fixed = clean_code(fixed)
         if is_valid(fixed):
             write_file(paths["APP"], fixed)
             run_cmd("npm run build", base)
 
-    return "✅ App updated successfully 🚀"
+    return " App updated successfully "
 
 
 # =========================================================
-# ✏️ EDIT SPECIFIC FILE  (targeted AI edit)
+#  EDIT SPECIFIC FILE  (targeted AI edit)
 # =========================================================
 
 def edit_file_with_ai(relative_path: str, instruction: str, project_id: str) -> str:
@@ -364,11 +364,11 @@ def edit_file_with_ai(relative_path: str, instruction: str, project_id: str) -> 
 
     content = read_file(full_path)
     if content is None:
-        return f"❌ File not found: {relative_path}"
+        return f" File not found: {relative_path}"
 
     updated = ai_edit_file(content, os.path.basename(relative_path), instruction)
     if not updated:
-        return "❌ AI edit failed"
+        return " AI edit failed"
 
     write_file(full_path, updated)
 
@@ -376,13 +376,13 @@ def edit_file_with_ai(relative_path: str, instruction: str, project_id: str) -> 
     if relative_path.startswith("src/") and relative_path.endswith((".jsx", ".js")):
         rc, logs = run_cmd("npm run build", paths["BASE"])
         if rc != 0:
-            return f"⚠️ File saved but build failed:\n{logs[:600]}"
+            return f" File saved but build failed:\n{logs[:600]}"
 
-    return f"✅ {relative_path} updated successfully"
+    return f" {relative_path} updated successfully"
 
 
 # =========================================================
-# 📄 MANUAL FILE WRITE
+#  MANUAL FILE WRITE
 # =========================================================
 
 def save_file(relative_path: str, content: str, project_id: str) -> str:
@@ -394,13 +394,13 @@ def save_file(relative_path: str, content: str, project_id: str) -> str:
     if relative_path.startswith("src/") and relative_path.endswith((".jsx", ".js")):
         rc, logs = run_cmd("npm run build", paths["BASE"])
         if rc != 0:
-            return f"⚠️ Saved but build failed:\n{logs[:600]}"
+            return f" Saved but build failed:\n{logs[:600]}"
 
-    return f"✅ {relative_path} saved"
+    return f" {relative_path} saved"
 
 
 # =========================================================
-# 📂 LIST PROJECT FILES
+#  LIST PROJECT FILES
 # =========================================================
 
 def list_project_files(project_id: str) -> list[str]:
@@ -418,7 +418,7 @@ def list_project_files(project_id: str) -> list[str]:
 
 
 # =========================================================
-# 📦 DOWNLOAD
+#  DOWNLOAD
 # =========================================================
 
 def create_downloadable_app(project_id: str) -> str:
@@ -434,7 +434,7 @@ def create_downloadable_app(project_id: str) -> str:
 
 
 # =========================================================
-# ▶️ DEV SERVER
+#  DEV SERVER
 # =========================================================
 
 def run_dev_server(project_id: str) -> str:
@@ -443,14 +443,14 @@ def run_dev_server(project_id: str) -> str:
     base  = paths["BASE"]
 
     if not os.path.exists(base):
-        return "❌ Build the app first"
+        return " Build the app first"
 
     if DEV_PROCESS and DEV_PROCESS.poll() is None:
-        print("🔄 Stopping previous dev server …")
+        print(" Stopping previous dev server …")
         DEV_PROCESS.terminate()
         DEV_PROCESS = None
 
-    print("▶️  Starting Vite & Express dev servers …")
+    print("  Starting Vite & Express dev servers …")
     
     start_cmd = "npm run dev -- --host --port 5174"
     if os.path.exists(paths.get("SERVER", os.path.join(base, "server.js"))):
@@ -462,4 +462,4 @@ def run_dev_server(project_id: str) -> str:
         cwd=base, shell=True
     )
 
-    return "🚀 Running at http://localhost:5174"
+    return " Running at http://localhost:5174"

@@ -227,21 +227,21 @@ function App() {
             title="Total Balance" 
             amount={totalBalance} 
             type="balance" 
-            icon="💎" 
+            icon="" 
             trend="+4.2% this month" 
           />
           <KPICard 
             title="Monthly Income" 
             amount={totalIncome} 
             type="income" 
-            icon="📈" 
+            icon="" 
             trend="Stable cashflow" 
           />
           <KPICard 
             title="Total Expenses" 
             amount={totalExpense} 
             type="expense" 
-            icon="📉" 
+            icon="" 
             trend="Within safe margin" 
           />
         </div>
@@ -622,7 +622,7 @@ function TransactionList({ transactions, searchQuery, setSearchQuery, sortOrder,
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
           {/* Search bar */}
           <div style={{ position: 'relative' }}>
-            <span style={{ position: 'absolute', left: '12px', top: '10px', color: '#94a3b8', fontSize: '14px' }}>🔍</span>
+            <span style={{ position: 'absolute', left: '12px', top: '10px', color: '#94a3b8', fontSize: '14px' }}></span>
             <input
               type="text"
               placeholder="Search merchant..."
@@ -675,7 +675,7 @@ function TransactionList({ transactions, searchQuery, setSearchQuery, sortOrder,
           borderRadius: '16px',
           border: '1px dashed rgba(255, 255, 255, 0.08)'
         }}>
-          <div style={{ fontSize: '32px', marginBottom: '12px' }}>📂</div>
+          <div style={{ fontSize: '32px', marginBottom: '12px' }}></div>
           <h4 style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '16px', fontWeight: 600, margin: '0 0 4px 0' }}>No transactions found</h4>
           <p style={{ fontSize: '13px', color: '#94a3b8', margin: 0 }}>Try adjusting your search query or category filter.</p>
         </div>

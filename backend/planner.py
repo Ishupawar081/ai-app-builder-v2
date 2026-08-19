@@ -12,7 +12,7 @@ load_dotenv()
 
 
 # =========================================================
-# 🔥 LLM CALL
+#  LLM CALL
 # =========================================================
 
 _ACTIVE_MODEL = None
@@ -44,18 +44,18 @@ def call_llm(prompt: str, temperature: float = 1.0) -> str | None:
                 _ACTIVE_MODEL = model  # Cache successful model
                 return res.text
             except Exception as inner_e:
-                print(f"⚠️ Warning: {model} failed with: {inner_e}")
+                print(f" Warning: {model} failed with: {inner_e}")
                 if _ACTIVE_MODEL == model:
                     _ACTIVE_MODEL = None # Reset if the cached model starts failing
                 continue
         return None
     except Exception as e:
-        print(f"❌ LLM Error: {e}")
+        print(f" LLM Error: {e}")
         return None
 
 
 # =========================================================
-# 🔥 JSON HELPER
+#  JSON HELPER
 # =========================================================
 
 def _parse_json(text: str) -> dict:
@@ -75,7 +75,7 @@ def _parse_json(text: str) -> dict:
 
 
 # =========================================================
-# 🔥 DOMAIN DETECTOR
+#  DOMAIN DETECTOR
 # Prevents all apps from looking like a todo list
 # =========================================================
 
@@ -106,7 +106,7 @@ Return this exact structure:
 
 
 # =========================================================
-# 🔥 PLAN QUALITY VALIDATOR
+#  PLAN QUALITY VALIDATOR
 # Retries if the plan is too generic (catches the todo-drift problem)
 # =========================================================
 
@@ -144,12 +144,12 @@ Respond with ONLY valid JSON:
     is_valid = result.get("is_valid", True)
     reason = result.get("reason", "")
     score = result.get("specificity_score", 5)
-    print(f"📊 Plan specificity score: {score}/10 — {reason}")
+    print(f" Plan specificity score: {score}/10 — {reason}")
     return is_valid, reason
 
 
 # =========================================================
-# 🔥 GENERATE PLAN  (improved)
+#  GENERATE PLAN  (improved)
 # =========================================================
 
 def generate_plan(user_prompt: str) -> dict:
@@ -162,7 +162,7 @@ def generate_plan(user_prompt: str) -> dict:
     layout = domain_info.get("suggested_layout", "sidebar-main")
     primary_interaction = domain_info.get("primary_interaction", "list-crud")
 
-    print(f"🔍 Detected domain: {domain} | category: {category} | layout: {layout}")
+    print(f" Detected domain: {domain} | category: {category} | layout: {layout}")
 
     # Step 2: Generate plan with domain context injected
     response = call_llm(f"""
@@ -249,7 +249,7 @@ USER IDEA: {user_prompt}
     # Step 3: Validate specificity — retry once if too generic
     is_valid, reason = validate_plan_specificity(plan, user_prompt)
     if not is_valid:
-        print(f"⚠️ Plan too generic ({reason}), retrying with stronger constraints...")
+        print(f" Plan too generic ({reason}), retrying with stronger constraints...")
         plan = _force_specific_plan(user_prompt, plan, domain_info, reason)
 
     return plan
@@ -281,7 +281,7 @@ USER IDEA: {user_prompt}
 
 
 # =========================================================
-# 🔥 GENERATE BACKEND CODE
+#  GENERATE BACKEND CODE
 # =========================================================
 
 def generate_backend_code(user_prompt: str, plan: dict = None) -> str | None:
@@ -326,7 +326,7 @@ Start directly with: import express from 'express';
     return cleaned
 
 # =========================================================
-# 🔥 GENERATE INITIAL APP CODE  (improved)
+#  GENERATE INITIAL APP CODE  (improved)
 # =========================================================
 
 def generate_initial_app(user_prompt: str, plan: dict = None) -> str | None:
@@ -433,13 +433,13 @@ Start directly with: import {{ useState...
     cleaned = code.replace("```jsx", "").replace("```javascript", "").replace("```", "").strip()
 
     if "export default" not in cleaned or "return" not in cleaned:
-        print("⚠️ LLM returned invalid/incomplete code")
+        print(" LLM returned invalid/incomplete code")
         return None
 
     # Post-generation audit: check that key feature words appear in the code
     missing = _audit_features(cleaned, features)
     if missing:
-        print(f"⚠️ Missing features detected: {missing}")
+        print(f" Missing features detected: {missing}")
         cleaned = _patch_missing_features(cleaned, missing, plan)
 
     return cleaned
@@ -527,7 +527,7 @@ Two columns side by side:
 
 
 # =========================================================
-# 🔥 FIX BROKEN CODE
+#  FIX BROKEN CODE
 # =========================================================
 
 def fix_app_code(error_output: str, broken_code: str) -> str | None:
@@ -555,7 +555,7 @@ STRICT RULES:
 
 
 # =========================================================
-# 🔥 TARGETED FILE EDIT (AI-powered)
+#  TARGETED FILE EDIT (AI-powered)
 # =========================================================
 
 def ai_edit_file(file_content: str, file_name: str, instruction: str) -> str | None:
@@ -586,7 +586,7 @@ CURRENT FILE CONTENT:
 
 
 # =========================================================
-# 🔥 AI EXPLAIN CODE
+#  AI EXPLAIN CODE
 # =========================================================
 
 def ai_explain_code(file_content: str, file_name: str) -> str | None:
@@ -605,7 +605,7 @@ CODE:
 
 
 # =========================================================
-# 🔥 FALLBACK PLAN
+#  FALLBACK PLAN
 # =========================================================
 
 def _fallback_plan(user_prompt: str) -> dict:

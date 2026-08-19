@@ -8,6 +8,6 @@ models = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-3.5-pro", "gemini-2.5-fl
 for m in models:
     try:
         res = client.models.generate_content(model=m, contents="hello")
-        print(f"✅ {m} SUCCESS")
+        print(f" {m} SUCCESS")
     except Exception as e:
-        print(f"❌ {m} FAILED: {e}")
+        print(f" {m} FAILED: {e}")

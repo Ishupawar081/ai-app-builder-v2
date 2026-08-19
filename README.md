@@ -6,7 +6,7 @@ The core objective of the system is to solve LLM quota and formatting issues by 
 
 ---
 
-## 🛠️ Technical Stack
+##  Technical Stack
 
 ### 1. The IDE Application Itself
 * **Frontend:** React, Vite, Tailwind CSS, Monaco Editor (`@monaco-editor/react`), Lucide React (icons), `react-resizable-panels`.
@@ -19,7 +19,7 @@ The core objective of the system is to solve LLM quota and formatting issues by 
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 * Node.js and npm
@@ -67,7 +67,7 @@ You need to run both the FastAPI backend and the React frontend.
 
 ---
 
-## 🔄 Execution Flow (How it Works)
+##  Execution Flow (How it Works)
 
 1. **User Prompt:** The user types an app idea into the AI Builder panel (e.g., "Build a fitness tracker").
 2. **Domain Detection & Planning (`planner.py`):**
@@ -87,7 +87,7 @@ You need to run both the FastAPI backend and the React frontend.
 
 ---
 
-## 🧠 AI Models Used
+##  AI Models Used
 
 The system exclusively utilizes **Google's Gemini** models through the `google-generativeai` SDK. 
 To prevent quota exhaustion and ensure reliability, `call_llm()` implements a **model-fallback logic array**. It attempts to generate content using the highest-tier models first and steps down sequentially if it encounters API errors (starting from `gemini-3.7-flash` down to `gemini-pro-latest`).

@@ -6,7 +6,7 @@ with open("planner.py", "r", encoding="utf-8") as f:
 # Add generate_backend_code before generate_initial_app
 backend_code = """
 # =========================================================
-# 🔥 GENERATE BACKEND CODE
+#  GENERATE BACKEND CODE
 # =========================================================
 
 def generate_backend_code(user_prompt: str, plan: dict = None) -> str | None:
@@ -54,8 +54,8 @@ Start directly with: const express = require('express');
 
 if "def generate_backend_code" not in content:
     content = content.replace(
-        "# =========================================================\n# 🔥 GENERATE INITIAL APP CODE  (improved)",
-        backend_code + "# =========================================================\n# 🔥 GENERATE INITIAL APP CODE  (improved)"
+        "# =========================================================\n#  GENERATE INITIAL APP CODE  (improved)",
+        backend_code + "# =========================================================\n#  GENERATE INITIAL APP CODE  (improved)"
     )
 
 # Change the rule 6 in generate_initial_app

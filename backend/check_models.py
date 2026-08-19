@@ -17,6 +17,6 @@ print("Testing available models...")
 for m in models:
     try:
         res = client.models.generate_content(model=m, contents="hello")
-        print(f"✅ {m} SUCCESS")
+        print(f" {m} SUCCESS")
     except Exception as e:
-        print(f"❌ {m} FAILED: {type(e).__name__} - {e}")
+        print(f" {m} FAILED: {type(e).__name__} - {e}")

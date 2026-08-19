@@ -15,4 +15,4 @@ try:
     )
     print("Result:", res.text)
 except Exception as e:
-    print(f"❌ LLM Error: {e}")
+    print(f" LLM Error: {e}")

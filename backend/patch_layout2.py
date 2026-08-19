@@ -33,7 +33,7 @@ with col_main:
             if not selected:
                 st.markdown(
                     '''<div style="padding:40px;text-align:center;color:#858585;">
-                        <div style="font-size:32px;margin-bottom:12px;">📂</div>
+                        <div style="font-size:32px;margin-bottom:12px;"></div>
                         <div>Select a file from the Explorer to edit</div>
                     </div>''',
                     unsafe_allow_html=True,
@@ -53,9 +53,9 @@ with col_main:
                     with h1:
                         st.caption(f"src > {os.path.basename(selected)}")
                     with h2:
-                        save_btn = st.button("💾", help="Save")
+                        save_btn = st.button("", help="Save")
                     with h3:
-                        diff_btn = st.button("🔀", help="Diff")
+                        diff_btn = st.button("", help="Diff")
 
                     # ── Code editor ──
                     new_content = st.text_area(
@@ -84,7 +84,7 @@ with col_main:
         
     with editor_tabs[2]:
         preview_url = st.text_input("URL", value="http://localhost:5173", label_visibility="collapsed")
-        if st.button("▶️ Launch"):
+        if st.button(" Launch"):
             run_dev_server(PROJECT_ID)
         components.iframe(preview_url, height=450, scrolling=True)
 

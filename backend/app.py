@@ -10,7 +10,7 @@ import streamlit.components.v1 as components
 st.set_page_config(
     page_title="AI App Builder",
     layout="wide",
-    page_icon="⚡",
+    page_icon="",
     initial_sidebar_state="expanded",
 )
 
@@ -186,7 +186,7 @@ try:
     )
     _imports_ok = True
 except Exception as e:
-    st.error(f"❌ Import error: {e}")
+    st.error(f" Import error: {e}")
     _imports_ok = False
     st.stop()
 
@@ -199,11 +199,11 @@ app_built = os.path.exists(APP_FILE)
 def get_file_icon(path: str) -> str:
     ext = os.path.splitext(path)[1].lower()
     icons = {
-        ".jsx": "⚛ ", ".js": "JS ", ".ts": "TS ", ".tsx": "⚛ ",
-        ".css": "🎨 ", ".html": "🌐 ", ".json": "{ } ",
-        ".md": "📝 ", ".env": "🔑 ", ".svg": "🖼 ",
+        ".jsx": " ", ".js": "JS ", ".ts": "TS ", ".tsx": " ",
+        ".css": " ", ".html": " ", ".json": "{ } ",
+        ".md": " ", ".env": " ", ".svg": " ",
     }
-    return icons.get(ext, "📄 ")
+    return icons.get(ext, " ")
 
 
 def render_diff(old: str, new: str) -> str:
@@ -235,7 +235,7 @@ def file_ext_ok(path: str) -> bool:
 # ▌SIDEBAR — Build + File Tree
 # =========================================================
 with st.sidebar:
-    st.markdown("### ⚡ AI App Builder")
+    st.markdown("###  AI App Builder")
     st.markdown('<span class="badge badge-blue">v2</span>', unsafe_allow_html=True)
     st.divider()
 
@@ -249,7 +249,7 @@ with st.sidebar:
 
     # ── File Tree ───────────────────────────────────────
     if app_built:
-        st.markdown("### 📂 Files")
+        st.markdown("###  Files")
         files = list_project_files(PROJECT_ID)
 
         # Group by top-level dir
@@ -260,7 +260,7 @@ with st.sidebar:
             groups.setdefault(group, []).append(f)
 
         for group, group_files in groups.items():
-            with st.expander(f"📁 {group}", expanded=(group == "src")):
+            with st.expander(f" {group}", expanded=(group == "src")):
                 for fpath in group_files:
                     is_active = st.session_state.selected_file == fpath
                     css_class = "file-item file-item-active" if is_active else "file-item"
@@ -283,21 +283,21 @@ with st.sidebar:
     st.divider()
 
     # ── Quick actions ────────────────────────────────────
-    if st.button("🔄 Reset Session", use_container_width=True):
+    if st.button(" Reset Session", use_container_width=True):
         st.session_state.clear()
         st.rerun()
 
     if app_built:
-        if st.button("▶️ Dev Server", use_container_width=True):
+        if st.button(" Dev Server", use_container_width=True):
             msg = run_dev_server(PROJECT_ID)
             st.success(msg)
 
-        if st.button("📦 Download ZIP", use_container_width=True):
+        if st.button(" Download ZIP", use_container_width=True):
             with st.spinner("Packaging…"):
                 zip_path = create_downloadable_app(PROJECT_ID)
             with open(zip_path, "rb") as f:
                 st.download_button(
-                    "⬇️ Save ZIP",
+                    " Save ZIP",
                     f,
                     file_name="react_app.zip",
                     mime="application/zip",
@@ -329,7 +329,7 @@ with col_main:
             if not selected:
                 st.markdown(
                     '''<div style="padding:40px;text-align:center;color:#858585;">
-                        <div style="font-size:32px;margin-bottom:12px;">📂</div>
+                        <div style="font-size:32px;margin-bottom:12px;"></div>
                         <div>Select a file from the Explorer to edit</div>
                     </div>''',
                     unsafe_allow_html=True,
@@ -349,9 +349,9 @@ with col_main:
                     with h1:
                         st.caption(f"src > {os.path.basename(selected)}")
                     with h2:
-                        save_btn = st.button("💾", help="Save")
+                        save_btn = st.button("", help="Save")
                     with h3:
-                        diff_btn = st.button("🔀", help="Diff")
+                        diff_btn = st.button("", help="Diff")
 
                     # ── Code editor ──
                     new_content = st.text_area(
@@ -380,7 +380,7 @@ with col_main:
         
     with editor_tabs[2]:
         preview_url = st.text_input("URL", value="http://localhost:5173", label_visibility="collapsed")
-        if st.button("▶️ Launch"):
+        if st.button(" Launch"):
             run_dev_server(PROJECT_ID)
         components.iframe(preview_url, height=450, scrolling=True)
 

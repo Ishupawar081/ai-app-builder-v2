@@ -24,10 +24,10 @@ col_main, col_chat = st.columns([2.5, 1], gap="medium")
 # ---------------------------------------------------------
 with col_main:
     tab_editor, tab_preview, tab_plan, tab_terminal = st.tabs([
-        "📝 Editor",
-        "🖼️ Preview",
-        "📋 Plan",
-        "🖥️ Terminal",
+        " Editor",
+        " Preview",
+        " Plan",
+        " Terminal",
     ])
 
     # --- EDITOR TAB ---
@@ -39,7 +39,7 @@ with col_main:
             if not selected:
                 st.markdown(
                     '''<div style="background:#161b22;border:1px solid #30363d;border-radius:12px;padding:40px;text-align:center;color:#8b949e;">
-                        <div style="font-size:32px;margin-bottom:12px;">📂</div>
+                        <div style="font-size:32px;margin-bottom:12px;"></div>
                         <div>Select a file from the sidebar to edit</div>
                     </div>''',
                     unsafe_allow_html=True,
@@ -53,11 +53,11 @@ with col_main:
                 with h1:
                     st.markdown(f"**{icon}{selected}**")
                 with h2:
-                    save_btn = st.button("💾 Save", use_container_width=True)
+                    save_btn = st.button(" Save", use_container_width=True)
                 with h3:
-                    diff_btn = st.button("🔀 Diff", use_container_width=True)
+                    diff_btn = st.button(" Diff", use_container_width=True)
                 with h4:
-                    explain_btn = st.button("💡 Explain", use_container_width=True)
+                    explain_btn = st.button(" Explain", use_container_width=True)
 
                 if not file_ext_ok(selected):
                     st.warning("Binary or unsupported file type — cannot edit here.")
@@ -114,18 +114,18 @@ with col_main:
                         with st.spinner("Explaining…"):
                             explanation = ai_explain_code(new_content, os.path.basename(selected))
                         if explanation:
-                            with st.expander("💡 AI Explanation", expanded=True):
+                            with st.expander(" AI Explanation", expanded=True):
                                 st.write(explanation)
 
 
     # --- PREVIEW TAB ---
     with tab_preview:
-        st.markdown("## 🖥️ Live Preview")
+        st.markdown("##  Live Preview")
         preview_cols = st.columns([3, 1])
         with preview_cols[0]:
             preview_url = st.text_input("Preview URL", value="http://localhost:5173", label_visibility="collapsed")
         with preview_cols[1]:
-            launch_btn = st.button("▶️ Start Server", use_container_width=True)
+            launch_btn = st.button(" Start Server", use_container_width=True)
 
         if launch_btn:
             if app_built:
@@ -141,7 +141,7 @@ with col_main:
     with tab_plan:
         if st.session_state.plan:
             plan = st.session_state.plan
-            st.markdown("## 📋 Implementation Plan")
+            st.markdown("##  Implementation Plan")
             
             # Generate Readable Plan Markdown
             md = f"### {plan.get('app_name', 'App Plan')}\\n\\n"
@@ -187,11 +187,11 @@ with col_main:
             st.info("Build an app first to use the terminal.")
         else:
             qcmds = {
-                "npm run build":    "🔨 Build",
-                "npm run dev":      "▶️ Dev",
-                "npm install":      "📦 Install",
-                "npm list --depth=0": "📋 Packages",
-                "ls src/":          "📂 List src",
+                "npm run build":    " Build",
+                "npm run dev":      " Dev",
+                "npm install":      " Install",
+                "npm list --depth=0": " Packages",
+                "ls src/":          " List src",
             }
             cols = st.columns(len(qcmds))
             for c, (cmd, label) in zip(cols, qcmds.items()):
@@ -205,29 +205,29 @@ with col_main:
             cmd_input = st.text_input("Command", placeholder="e.g. npm run build", label_visibility="collapsed")
             run_cols = st.columns([4, 1])
             with run_cols[1]:
-                run_btn = st.button("▶️ Run", use_container_width=True)
+                run_btn = st.button(" Run", use_container_width=True)
 
             if run_btn and cmd_input.strip():
                 with st.spinner(f"Running: {cmd_input}"):
                     rc, out = run_cmd(cmd_input, BASE, timeout=120)
                 st.session_state.terminal_output = f"$ {cmd_input}\\n\\n{out}"
                 if rc == 0:
-                    st.success("✅ Command succeeded")
+                    st.success(" Command succeeded")
                 else:
-                    st.error(f"❌ Exit code {rc}")
+                    st.error(f" Exit code {rc}")
 
             if st.session_state.terminal_output:
                 st.text_area("Output", st.session_state.terminal_output, height=320, label_visibility="collapsed")
 
             if st.session_state.terminal_output and "error" in st.session_state.terminal_output.lower():
-                if st.button("🛠️ AI Fix errors above"):
+                if st.button(" AI Fix errors above"):
                     with st.spinner("Analysing and fixing…"):
                         current = read_file(APP_FILE) or ""
                         from planner import fix_app_code
                         fixed = fix_app_code(st.session_state.terminal_output[:2000], current)
                     if fixed:
                         write_file(APP_FILE, fixed)
-                        st.success("✅ App.jsx auto-fixed — rebuild to verify")
+                        st.success(" App.jsx auto-fixed — rebuild to verify")
                     else:
                         st.error("AI fix failed")
 
@@ -236,7 +236,7 @@ with col_main:
 # RIGHT COLUMN: AI Chatbot / Command Center
 # ---------------------------------------------------------
 with col_chat:
-    st.markdown("### 💬 AI Assistant")
+    st.markdown("###  AI Assistant")
     
     if not app_built:
         st.info("I can help you build a new full-stack app.")
@@ -250,14 +250,14 @@ with col_chat:
         if "_inject_prompt" in st.session_state:
             user_input = st.session_state.pop("_inject_prompt")
         
-        if st.button("🧠 Generate Plan", use_container_width=True, type="primary"):
+        if st.button(" Generate Plan", use_container_width=True, type="primary"):
             if user_input.strip():
                 with st.spinner("Planning…"):
                     plan = generate_plan(user_input)
                 st.session_state.plan = plan
                 st.rerun()
                 
-        if st.button("🚀 Build App", use_container_width=True, disabled=not bool(st.session_state.plan)):
+        if st.button(" Build App", use_container_width=True, disabled=not bool(st.session_state.plan)):
             if st.session_state.plan:
                 with st.spinner("Building full-stack app (takes ~60s)…"):
                     result = build_app(
@@ -269,7 +269,7 @@ with col_chat:
                 st.success(result)
                 st.rerun()
 
-        with st.expander("💡 Example prompts"):
+        with st.expander(" Example prompts"):
             examples = [
                 "A Kanban board with drag-drop columns",
                 "A personal finance tracker with charts",
@@ -283,11 +283,11 @@ with col_chat:
     else:
         # App is built, show contextual editing options
         action = st.radio("What would you like to do?", 
-                          ["✨ Edit Current File", "🛠️ Modify Whole App", "⚠️ Build New App"])
+                          [" Edit Current File", " Modify Whole App", " Build New App"])
         
         st.divider()
         
-        if action == "✨ Edit Current File":
+        if action == " Edit Current File":
             st.markdown(f"**Target:** `{os.path.basename(st.session_state.selected_file) if st.session_state.selected_file else 'None'}`")
             if not st.session_state.selected_file:
                 st.warning("Please select a file from the sidebar first.")
@@ -307,11 +307,11 @@ with col_chat:
                             st.session_state.diff_old = current
                             st.session_state.editor_content = updated
                             st.session_state.show_diff = True
-                            st.success("Edit applied! Review in Editor tab and click 💾 Save.")
+                            st.success("Edit applied! Review in Editor tab and click  Save.")
                         else:
                             st.error("AI edit failed")
                             
-        elif action == "🛠️ Modify Whole App":
+        elif action == " Modify Whole App":
             mod_input = st.text_area("Describe app-wide changes", placeholder="e.g. Add dark mode toggle")
             if st.button("Update App", use_container_width=True, type="primary"):
                 if mod_input.strip():
@@ -320,17 +320,17 @@ with col_chat:
                     st.success(result)
                     st.rerun()
                     
-        elif action == "⚠️ Build New App":
+        elif action == " Build New App":
             st.warning("This will overwrite the current project.")
             new_input = st.text_area("New App Idea")
-            if st.button("🧠 Generate Plan", use_container_width=True):
+            if st.button(" Generate Plan", use_container_width=True):
                 if new_input.strip():
                     with st.spinner("Planning…"):
                         plan = generate_plan(new_input)
                     st.session_state.plan = plan
                     st.rerun()
                     
-            if st.button("🚀 Build App", use_container_width=True, disabled=not bool(st.session_state.plan)):
+            if st.button(" Build App", use_container_width=True, disabled=not bool(st.session_state.plan)):
                 if st.session_state.plan:
                     with st.spinner("Building full-stack app…"):
                         result = build_app(
